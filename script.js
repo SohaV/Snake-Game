@@ -17,6 +17,8 @@ var foodY;
 var velocityX = 0;
 var velocityY = 0;
 
+var snakeBody = [];
+
 window.onload = function() {
     board = document.getElementById("board");
     board.height = rows * blocksize;
@@ -36,13 +38,26 @@ function update() {
     context.fillRect(foodX, foodY, blocksize, blocksize);
 
     if (snakeX == foodX && snakeY == foodY) {
+        snakeBody.push([foodX, foodY]);
         placeFood();
+    }
+
+    for (let i = snakeBody.length - 1; i > 0; i--) {
+        snakeBody[i] = snakeBody[i - 1];
+    }
+
+    if (snakeBody.length) {
+        snakeBody[0] = [snakeX, snakeY];
     }
 
     context.fillStyle = "#386641";
     snakeX += velocityX * blocksize;
     snakeY += velocityY * blocksize;
     context.fillRect(snakeX, snakeY, blocksize, blocksize);
+
+    for (let i = 0; i < snakeBody.length; i++) {
+        context.fillRect(snakeBody[i][0], snakeBody[i][1], blocksize, blocksize);
+    }
 }
 
 function changeDirection(e) {
