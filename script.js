@@ -13,6 +13,8 @@ var snakeY = blocksize * 5;
 var foodX;
 var foodY;
 
+var gameOver = false;
+
 // snake speed
 var velocityX = 0;
 var velocityY = 0;
@@ -31,6 +33,10 @@ window.onload = function() {
 }
 
 function update() {
+    if (gameOver) {
+        return;
+    }
+
     context.fillStyle = "#dde5b6";
     context.fillRect(0, 0, board.width, board.height);
 
@@ -57,6 +63,20 @@ function update() {
 
     for (let i = 0; i < snakeBody.length; i++) {
         context.fillRect(snakeBody[i][0], snakeBody[i][1], blocksize, blocksize);
+    }
+
+    // Gameover conditions
+
+    if (snakeX < 0 || snakeX > cols * blocksize || snakeY < 0 || snakeY > rows * blocksize) {
+        gameOver = true;
+        alert("Game Over!");
+    }
+
+    for (let i = 0; i < snakeBody.length; i++) {
+        if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
+            gameOver = true;
+            alert("Game Over!");
+        }
     }
 }
 
